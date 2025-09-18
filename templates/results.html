@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Results - Microplastics Detection</title>
+
+  <!-- Bootstrap & AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #f3e5f5, #e1f5fe);
+      font-family: 'Quicksand', sans-serif;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #4a148c;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #0288d1;
+      margin-top: 30px;
+    }
+
+    .result-value {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .progress {
+      height: 25px;
+      background-color: #e0e0e0;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      font-weight: bold;
+      font-size: 1rem;
+      line-height: 25px;
+    }
+
+    .image-preview {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    .btn-home {
+      margin-top: 40px;
+      display: block;
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 12px;
+      background-color: #4a148c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background-color: #6a1b9a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" data-aos="fade-up">
+    <h1>Analysis Results</h1>
+
+    <div data-aos="zoom-in" data-aos-delay="100">
+      <h2>📸 Uploaded Image:</h2>
+      <img src="{{ image_path }}" alt="Uploaded Sample" class="image-preview"/>
+    </div>
+
+    <div data-aos="fade-up" data-aos-delay="200">
+      <h2>🧠 Prediction Result:</h2>
+      <p class="result-value">{{ class_predict }}</p>
+    </div>
+
+    <div data-aos="fade-up" data-aos-delay="300">
+      <h2>✅ Binary Classification:</h2>
+      <p class="result-value">{{ binary_predictions[0][0] }}</p>
+    </div>
+
+    <div data-aos="fade-up" data-aos-delay="400">
+      <h2>📊 Confidence Scores:</h2>
+      {% for label, value in predictions.items() %}
+        <p><strong>{{ label }}:</strong> {{ '%.2f' % (value * 100) }}%</p>
+        <div class="progress mb-3">
+          <div class="progress-bar bg-info" role="progressbar" style="width: {{ value * 100 }}%">
+            {{ '%.0f' % (value * 100) }}%
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <a href="{{ url_for('home') }}" class="btn-home" data-aos="zoom-in-up" data-aos-delay="500">
+      ⬅ Back to Home
+    </a>
+  </div>
+
+  <!-- AOS Animation -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+
+</body>
+</html>
